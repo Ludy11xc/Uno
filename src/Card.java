@@ -9,15 +9,15 @@ public class Card {
     public static Rank[] normalRanks = new Rank[]{Rank.ONE, Rank.TWO, Rank.THREE, Rank.FOUR, Rank.FIVE, Rank.SIX, Rank.SEVEN, Rank.EIGHT, Rank.NINE, Rank.SKIP, Rank.REVERSE, Rank.DRAWTWO};
     public static Rank[] wildRanks = new Rank[]{Rank.WILD, Rank.DRAWFOUR};
 
-    private Color color;
-    private Rank rank;
+    private final Color color;
+    private final Rank rank;
 
     enum Color {
         RED,
         YELLOW,
         GREEN,
         BLUE,
-        WILD;
+        WILD
     }
 
     enum Rank {
@@ -35,7 +35,7 @@ public class Card {
         REVERSE,
         DRAWTWO,
         WILD,
-        DRAWFOUR;
+        DRAWFOUR
     }
 
     public Card(Color color, Rank rank) {
