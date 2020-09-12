@@ -2,15 +2,36 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Game {
+    /**
+     * Constants declared defining the number of sets of each type of card
+     */
     public static int ZEROS = 1;
     public static int ONE_TO_NINES = 2;
     public static int WILDS = 4;
+    /**
+     * Defines the number of cards each Player starts with at the beginning of a Game
+     */
     public static int STARTING_CARDS = 7;
 
+    /**
+     * Stores the Players present in the Game
+     */
     private Player[] players;
+    /**
+     * Stores the current turn order as an ArrayList of Players
+     */
     private ArrayList<Player> turnOrder;
+    /**
+     * Stores the deck as an ArrayList of Cards
+     */
     private ArrayList<Card> deck;
+    /**
+     * Stores the discard pile as an ArrayList of Cards;
+     * Will check the top card in this pile every time a card is
+     * played to check if it is valid.
+     */
     private ArrayList<Card> discard;
+
 
     /**
      * This function creates the array of players and deals out cards
@@ -24,6 +45,7 @@ public class Game {
         }
         dealPlayerHands();
     }
+
 
     /**
      * This function creates the ArrayList to store the deck,
@@ -45,6 +67,7 @@ public class Game {
         Collections.shuffle(this.deck);
     }
 
+
     /**
      * Helper function which adds cards to the deck based on the given parameters
      * @param sets Specifies the number of copies of each card in the deck
@@ -61,6 +84,7 @@ public class Game {
         }
     }
 
+
     /**
      * This function deals a starting hand to each player,
      * and must be called after the deck and players are initialized.
@@ -73,17 +97,30 @@ public class Game {
         }
     }
 
+    /**
+     * Deals a single card to the hand of the Player specified;
+     * removes that card from the top of the deck.
+     * @param p Player who is being dealt a card
+     */
     private void dealOneCard(Player p) {
         p.addCardToHand(this.deck.remove(this.deck.size() - 1));
     }
 
+    /**
+     * Initiates the Discard Pile at the start of the Game
+     * by removing the top card from the deck
+     */
     private void initiateDiscardPile() {
         this.discard = new ArrayList<Card>();
         discard.add(this.deck.remove(this.deck.size() - 1));
     }
 
+    /**
+     * Returns the top card of the discard pile
+     * (Does not remove it)
+     */
     private Card topOfDiscard() {
-        return this.discard.get(0);
+        return this.discard.get(this.discard.size() - 1);
     }
 
 }
