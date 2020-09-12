@@ -18,7 +18,8 @@ public class Game {
      */
     private Player[] players;
     /**
-     * Stores the current turn order as an ArrayList of Players
+     * Stores the current turn order as an ArrayList of Players.
+     * Index 0 represents the Player who will play next
      */
     private ArrayList<Player> turnOrder;
     /**
@@ -102,8 +103,10 @@ public class Game {
      * removes that card from the top of the deck.
      * @param p Player who is being dealt a card
      */
-    private void dealOneCard(Player p) {
-        p.addCardToHand(this.deck.remove(this.deck.size() - 1));
+    private Card dealOneCard(Player p) {
+        Card deckCard = this.deck.remove(this.deck.size() - 1);
+        p.addCardToHand(deckCard);
+        return deckCard;
     }
 
     /**
@@ -121,6 +124,50 @@ public class Game {
      */
     private Card topOfDiscard() {
         return this.discard.get(this.discard.size() - 1);
+    }
+
+    /**
+     * Reverses the Turn Order ArrayList;
+     * Called when a reverse Card is played.
+     */
+    private void reverseTurnOrder() {
+        Collections.reverse(this.turnOrder);
+    }
+
+    /**
+     * Skips the Player next in the turn order;
+     * Called when a skip Card is played.
+     * @return the Player who was skipped.
+     */
+    private Player skipPlayer() {
+        return this.turnOrder.remove(0);
+    }
+
+    /**
+     * Causes the Player to draw x cards
+     * @param p Player drawing the cards
+     * @param x number of cards drawn
+     */
+    private void drawX(Player p, int x) {
+        for (int i = 0; i < x; i++) {
+            dealOneCard(p);
+        }
+    }
+
+    /**
+     * Checks the Player's hand and returns a Boolean stating if the Player
+     * has at least one card which can be played.
+     * @param p Player who's hand the function is checking
+     * @return true if Player p has a playable card, false otherwise.
+     */
+    private Boolean isAbleToPlay(Player p) {
+        ArrayList<Card> hand = p.getHand();
+        for (int i = 0; i < hand.size(); i++) {
+            if (hand.get(i).isValidCard(topOfDiscard())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

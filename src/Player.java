@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 /**
- *
+ * Player class to represent each player in game and store
+ * information relative to that player i.e. hand
  */
 public class Player {
     /**
@@ -33,5 +34,9 @@ public class Player {
      */
     public Card removeCardFromHand(int index) {
         return hand.remove(index);
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
     }
 }

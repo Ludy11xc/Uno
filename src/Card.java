@@ -73,7 +73,7 @@ public class Card {
      * @param discardCard Card to be compared to (card on top of the discard pile)
      * @return True or False
      */
-    public Boolean isValidColor(Card discardCard) {
+    private Boolean isValidColor(Card discardCard) {
         return (this.color == discardCard.color) || (this.color == Color.WILD);
     }
 
@@ -82,7 +82,7 @@ public class Card {
      * @param discardCard Card to be compared to (card on top of the discard pile)
      * @return True or False
      */
-    public Boolean isValidRank(Card discardCard) {
+    private Boolean isValidRank(Card discardCard) {
         return (this.rank == discardCard.rank);
     }
 
