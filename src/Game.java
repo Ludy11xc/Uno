@@ -33,6 +33,21 @@ public class Game {
      */
     private ArrayList<Card> discard;
 
+    /**
+     * True if the game has started and nobody has won, false otherwise
+     */
+    private Boolean inProgress;
+
+    private int numOfPlayers;
+
+    /**
+     * Public constructor for Game objects
+     * @param numOfPlayers
+     */
+    public Game(int numOfPlayers) {
+        this.inProgress = false;
+        this.numOfPlayers = numOfPlayers;
+    }
 
     /**
      * This function creates the array of players and deals out cards
@@ -168,6 +183,14 @@ public class Game {
             }
         }
         return false;
+    }
+
+    /**
+     * Adds the Card c to the discard pile
+     * @param c Card to be added to discard pile
+     */
+    private void addToDiscard(Card c) {
+        this.discard.add(c);
     }
 
 }
