@@ -6,26 +6,28 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    private static int players = 0;
+    // private static int players = 0;  Might use in final implementation
 
     /**
      * hand stores the Cards currently in the Player's hand
      */
     private ArrayList<Card> hand;
 
+    /* May use for final implementation
     /**
      * Unique identifier
-     */
+     *
     private int id;
+     */
 
     /**
      * Constructor for Player;
      * Initializes the hand ArrayList for the Player
      */
     public Player() {
-        players++;
+        //players++;
         hand = new ArrayList<Card>();
-        id = players;
+        // id = players;
     }
 
     /**
@@ -59,9 +61,19 @@ public class Player {
         return hand;
     }
 
+    /**
+     * Sets hand to object passed in.  Used only for easier testing.
+     * @param newHand ArrayList of Cards to replace hand
+     */
+    public void setHand(ArrayList<Card> newHand) {
+        hand = newHand;
+    }
+
+    /* May use for final implementation
     public int getId() {
         return id;
     }
+    */
 
     public Boolean noCards() {
         return hand.isEmpty();

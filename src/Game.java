@@ -362,7 +362,7 @@ public class Game {
     private Boolean isAbleToPlay(Player p) {
         ArrayList<Card> hand = p.getHand();
         for (Card card : hand) {
-            if (card.isValidCard(topOfDiscard())) {
+            if (canBePlayed(card)) {
                 return true;
             }
         }
@@ -430,5 +430,34 @@ public class Game {
     public ArrayList<Player> getTurnOrder() {
         return turnOrder;
     }
+
+    /**
+     * Function to add a card to the discard pile;
+     * Used only for easier and better testing.
+     * @param c Card to be added to top of discard pile
+     */
+    public void setTopDiscard(Card c) {
+        discard.add(c);
+        currentColor = c.getColor();
+    }
+
+    public Boolean getSkipFlag() {
+        return skipFlag;
+    }
+
+    public Boolean getDrawTwoFlag() {
+        return drawTwoFlag;
+    }
+
+    public Boolean getDrawFourFlag() {
+        return drawFourFlag;
+    }
+
+    public void clearFlags() {
+        skipFlag = false;
+        drawTwoFlag = false;
+        drawFourFlag = false;
+    }
+
 
 }
