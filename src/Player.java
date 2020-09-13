@@ -5,17 +5,27 @@ import java.util.ArrayList;
  * information relative to that player i.e. hand
  */
 public class Player {
+
+    private static int players = 0;
+
     /**
      * hand stores the Cards currently in the Player's hand
      */
     private ArrayList<Card> hand;
 
     /**
+     * Unique identifier
+     */
+    private int id;
+
+    /**
      * Constructor for Player;
      * Initializes the hand ArrayList for the Player
      */
     public Player() {
+        players++;
         hand = new ArrayList<Card>();
+        id = players;
     }
 
     /**
@@ -47,6 +57,10 @@ public class Player {
 
     public ArrayList<Card> getHand() {
         return hand;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Boolean noCards() {

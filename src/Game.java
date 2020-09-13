@@ -62,10 +62,12 @@ public class Game {
 
     private Player currentPlayer;
 
+    private Player winner;
+
     /**
      * Public constructor for Game objects
      * Constructs the Game and initializes the game starting state.
-     * @param numOfPlayers
+     * @param numOfPlayers number of Players in the game
      */
     public Game(int numOfPlayers) {
         /* Initializing variables */
@@ -155,6 +157,8 @@ public class Game {
     public void endTurn() {
         if (this.currentPlayer.noCards()) {
             endGame();
+            winner = currentPlayer;
+            return;
         }
         this.turnOrder.add(this.currentPlayer);
         this.currentPlayer = null;
@@ -339,14 +343,6 @@ public class Game {
     }
 
     /**
-     * Skips the Player next in the turn order;
-     * Called when a skip Card is played.
-     */
-    private void skipPlayer() {
-        this.turnOrder.add(this.turnOrder.remove(0));
-    }
-
-    /**
      * Causes the Player to draw x cards
      * @param p Player drawing the cards
      * @param x number of cards drawn
@@ -409,6 +405,30 @@ public class Game {
             this.currentPlayer.removeCardFromHand(drawnCard);
             handleCard(drawnCard);
         }
+    }
+
+    public Boolean getInProgress() {
+        return inProgress;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+
+    public ArrayList<Card> getDiscard() {
+        return discard;
+    }
+
+    public ArrayList<Player> getTurnOrder() {
+        return turnOrder;
     }
 
 }
