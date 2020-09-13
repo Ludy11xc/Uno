@@ -32,7 +32,7 @@ class PlayerTest {
         // Test result after on card was removed
         assertEquals(trialHand1, p.getHand());
 
-        p.removeCardFromHand(0);
+        p.removeCardFromHand(c1);
         assertEquals(empty, p.getHand());
     }
 
@@ -43,4 +43,19 @@ class PlayerTest {
 
     }
     */
+
+    @Test
+    void noCards() {
+        Player p = new Player();
+        // Test result before adding any cards
+        assertTrue(p.noCards());
+
+        p.addCardToHand(new Card(Card.Color.RED, Card.Rank.ONE));
+        // Test result after adding one card
+        assertFalse(p.noCards());
+
+        p.removeCardFromHand(0);
+        // Test result after adding then removing a card
+        assertTrue(p.noCards());
+    }
 }

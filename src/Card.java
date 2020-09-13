@@ -1,16 +1,31 @@
+import java.util.Arrays;
+
 /**
- * Card class serves as the superclass for all card types in UNO.
- *
+ * Card class serves as the representation for all card types in UNO.
+ * Stores the Card Color and Rank and allows for comparison of
+ * two Cards.
  */
 public class Card {
     /**
-     * Grouping of colors and ranks to make the creation of the deck easier
+     * Grouping of colors and ranks to make the creation of the deck
+     * and various other tasks easier
      */
-    public static Color[] normalColors = new Color[]{Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE};
+    public static Color[] normalColors = new Color[]{Color.RED,
+            Color.YELLOW, Color.GREEN, Color.BLUE};
+
     public static Color[] wildColor = new Color[]{Color.WILD};
+
     public static Rank[] zeroRank = new Rank[]{Rank.ZERO};
-    public static Rank[] normalRanks = new Rank[]{Rank.ONE, Rank.TWO, Rank.THREE, Rank.FOUR, Rank.FIVE, Rank.SIX, Rank.SEVEN, Rank.EIGHT, Rank.NINE, Rank.SKIP, Rank.REVERSE, Rank.DRAWTWO};
+
+    public static Rank[] normalRanks = new Rank[]{Rank.ONE, Rank.TWO,
+            Rank.THREE, Rank.FOUR, Rank.FIVE, Rank.SIX, Rank.SEVEN,
+            Rank.EIGHT, Rank.NINE, Rank.SKIP, Rank.REVERSE, Rank.DRAWTWO};
+
     public static Rank[] wildRanks = new Rank[]{Rank.WILD, Rank.DRAWFOUR};
+
+    public static Rank[] numberedRanks = new Rank[]{Rank.ZERO, Rank.ONE,
+            Rank.TWO, Rank.THREE, Rank.FOUR, Rank.FIVE, Rank.SIX,
+            Rank.SEVEN, Rank.EIGHT, Rank.NINE};
 
     /**
      * color stores the Color of the Card
@@ -90,10 +105,26 @@ public class Card {
      * This function compares the color and rank of the card it is called on to the card passed in as a parameter
      * and determines if the card is a valid card to be played.
      * @param discardCard Card to be compared to (card on top of the discard pile)
-     * @return True or False
+     * @return true or false
      */
     public Boolean isValidCard(Card discardCard) {
         return this.isValidColor(discardCard) || this.isValidRank(discardCard);
+    }
+
+    /**
+     * Checks if the Card is a numbered card.
+     * @return true or false
+     */
+    public Boolean isNumberedCard() {
+        return Arrays.asList(numberedRanks).contains(this.rank);
+    }
+
+    /**
+     * Checks if the Card is a normal colored card.
+     * @return true or false
+     */
+    public Boolean isColoredCard() {
+        return Arrays.asList(normalColors).contains(this.color);
     }
 
     public Color getColor() {

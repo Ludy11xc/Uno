@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Game {
@@ -9,7 +10,8 @@ public class Game {
     public static int ONE_TO_NINES = 2;
     public static int WILDS = 4;
     /**
-     * Defines the number of cards each Player starts with at the beginning of a Game
+     * Defines the number of cards each Player starts with
+     * at the beginning of a Game
      */
     public static int STARTING_CARDS = 7;
 
@@ -35,18 +37,166 @@ public class Game {
 
     /**
      * True if the game has started and nobody has won, false otherwise
+     * Main game loop will run while(inProgress)
      */
     private Boolean inProgress;
 
-    private int numOfPlayers;
+    /**
+     * Flag to signal that a Player's turn will be skipped
+     */
+    private Boolean skipFlag;
+
+    /**
+     * Flag to signal that a Player will have to draw two cards
+     */
+    private Boolean drawTwoFlag;
+
+    /**
+     * Flag to signal that a Player will have to draw four cards
+     */
+    private Boolean drawFourFlag;
+
+    //private int numOfPlayers;
+
+    private Card.Color currentColor;
+
+    private Player currentPlayer;
 
     /**
      * Public constructor for Game objects
+     * Constructs the Game and initializes the game starting state.
      * @param numOfPlayers
      */
     public Game(int numOfPlayers) {
+        /* Initializing variables */
         this.inProgress = false;
-        this.numOfPlayers = numOfPlayers;
+        this.currentPlayer = null;
+        this.currentColor = null;
+        this.skipFlag = false;
+        this.drawTwoFlag = false;
+        this.drawFourFlag = false;
+
+        /* Calling functions to set up the initial Game state */
+        this.initiateStandardDeck();
+        this.initiatePlayers(numOfPlayers);
+        this.initiateTurnOrder();
+        this.initiateDiscardPile();
+    }
+
+    /**
+     * Simply sets inProgress Boolean to true;
+     * Main game loop will run while(inProgress)
+     */
+    public void startGame() {
+        this.inProgress = true;
+    }
+
+    /**
+     * Simply sets inProgress Boolean to false;
+     * Main game loop will exit on check.
+     */
+    public void endGame() {
+        this.inProgress = false;
+    }
+
+    /**
+     * Starts the player's turn.
+     * Removes player from turnOrder ArrayList
+     * while turn is in progress.
+     */
+    public void startTurn() {
+        this.currentPlayer = this.turnOrder.remove(0);
+    }
+
+    /**
+     * Main logic of basic gameplay.
+     * Executes a turn for the current player.
+     */
+    public void executeTurn() {
+        if (this.skipFlag) {
+            this.skipFlag = false;
+            return;
+        }
+        if (this.drawTwoFlag) {
+            this.drawTwoFlag = false;
+            drawX(currentPlayer, 2);
+            return;
+        }
+        if (this.drawFourFlag) {
+            this.drawFourFlag = false;
+            drawX(currentPlayer, 4);
+            return;
+        }
+        if (!isAbleToPlay(currentPlayer)) {
+            drawCard();
+            return;
+        }
+
+        /* BELOW THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
+        int cardIndex = getFirstPlayableCardIndex(currentPlayer);
+        /* ABOVE THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
+
+        /*
+         * if cardIndex == -1, player elected to draw a card despite
+         * having a playable card
+         */
+        if (cardIndex == -1) {
+            drawCard();
+            return;
+        }
+        Card playedCard = currentPlayer.removeCardFromHand(cardIndex);
+        handleCard(playedCard);
+    }
+
+    /**
+     * Ends the player's turn.
+     * Adds player back to end of turnOrder ArrayList.
+     */
+    public void endTurn() {
+        if (this.currentPlayer.noCards()) {
+            endGame();
+        }
+        this.turnOrder.add(this.currentPlayer);
+        this.currentPlayer = null;
+    }
+
+    /**
+     * Updates the game state to reflect that the Card has been played.
+     * Assumes that the Card has already been checked as a valid card to be played.
+     * @param playedCard Card that played during the current turn
+     */
+    private void handleCard(Card playedCard) {
+        this.discard.add(playedCard);
+        this.currentColor = playedCard.getColor();
+        if (playedCard.getColor() == Card.Color.WILD) {
+            if (playedCard.getRank() == Card.Rank.DRAWFOUR) {
+                this.drawFourFlag = true;
+            }
+            /* BELOW THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
+            Card.Color newColor = Card.Color.RED;
+            /* ABOVE THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
+            chooseColor(newColor);
+        } else {
+            if (playedCard.getRank() == Card.Rank.SKIP) {
+                this.skipFlag = true;
+            }
+            if (playedCard.getRank() == Card.Rank.DRAWTWO) {
+                this.drawTwoFlag = true;
+            }
+            if (playedCard.getRank() == Card.Rank.REVERSE) {
+                reverseTurnOrder();
+            }
+
+        }
+    }
+
+    /**
+     * Function that changes the current color to the color passed in.
+     * Called after a wild Card is played and a color needs to be selected.
+     * @param newColor Color chosen to be the new current color
+     */
+    private void chooseColor(Card.Color newColor) {
+        this.currentColor = newColor;
     }
 
     /**
@@ -60,6 +210,16 @@ public class Game {
             this.players[i] = newPlayer;
         }
         dealPlayerHands();
+    }
+
+
+    /**
+     * This function randomly establishes the turn order for the game.
+     */
+    private void initiateTurnOrder() {
+        this.turnOrder = new ArrayList<Player>();
+        this.turnOrder.addAll(Arrays.asList(players));
+        Collections.shuffle(this.turnOrder);
     }
 
 
@@ -116,12 +276,31 @@ public class Game {
     /**
      * Deals a single card to the hand of the Player specified;
      * removes that card from the top of the deck.
+     * If the deck is empty, calls function to pull the
+     * discard pile minus the top card as the new deck.
      * @param p Player who is being dealt a card
      */
     private Card dealOneCard(Player p) {
+        if (deck.isEmpty()) {
+            discardPileToDeck();
+        }
         Card deckCard = this.deck.remove(this.deck.size() - 1);
         p.addCardToHand(deckCard);
         return deckCard;
+    }
+
+    /**
+     * Takes the discard pile minus the top card and fills
+     * the deck with the cards.
+     * Called when the deck becomes empty.
+     */
+    private void discardPileToDeck() {
+        Card discardTop = topOfDiscard();
+        this.discard.remove(this.discard.size() - 1);
+        this.deck.addAll(this.discard);
+        Collections.shuffle(this.deck);
+        this.discard.clear();
+        this.discard.add(discardTop);
     }
 
     /**
@@ -130,7 +309,17 @@ public class Game {
      */
     private void initiateDiscardPile() {
         this.discard = new ArrayList<Card>();
-        discard.add(this.deck.remove(this.deck.size() - 1));
+        this.discard.add(this.deck.remove(this.deck.size() - 1));
+        Card discardTop = topOfDiscard();
+
+        /* Loops until a colored, numbered card is selected */
+        while(!(discardTop.isColoredCard() && discardTop.isNumberedCard())) {
+            this.deck.add(this.discard.remove(0));
+            Collections.shuffle(this.deck);
+            this.discard.add(this.deck.remove(this.deck.size() - 1));
+            discardTop = topOfDiscard();
+        }
+        this.currentColor = topOfDiscard().getColor();
     }
 
     /**
@@ -152,10 +341,9 @@ public class Game {
     /**
      * Skips the Player next in the turn order;
      * Called when a skip Card is played.
-     * @return the Player who was skipped.
      */
-    private Player skipPlayer() {
-        return this.turnOrder.remove(0);
+    private void skipPlayer() {
+        this.turnOrder.add(this.turnOrder.remove(0));
     }
 
     /**
@@ -177,8 +365,8 @@ public class Game {
      */
     private Boolean isAbleToPlay(Player p) {
         ArrayList<Card> hand = p.getHand();
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).isValidCard(topOfDiscard())) {
+        for (Card card : hand) {
+            if (card.isValidCard(topOfDiscard())) {
                 return true;
             }
         }
@@ -186,11 +374,41 @@ public class Game {
     }
 
     /**
-     * Adds the Card c to the discard pile
-     * @param c Card to be added to discard pile
+     * Check if a Card can be played.
+     * Different from Card.isValidCard because it checks
+     * the currentColor in case a wild card was last played.
+     * @param c card being checked for validity
+     * @return true or false
      */
-    private void addToDiscard(Card c) {
-        this.discard.add(c);
+    private Boolean canBePlayed(Card c) {
+        return (c.isValidCard(topOfDiscard()) || (c.getColor() == this.currentColor));
+    }
+
+    /**
+     * Returns the index of the first playable card in a player's hand.
+     * @param p Player to check
+     * @return index of first playable card
+     */
+    private int getFirstPlayableCardIndex(Player p) {
+        ArrayList<Card> playerHand = p.getHand();
+        for (int i = 0; i < playerHand.size(); i++) {
+            if (canBePlayed(playerHand.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Current Player draws a card and plays it if
+     * it is a valid card to be played.
+     */
+    private void drawCard() {
+        Card drawnCard = dealOneCard(this.currentPlayer);
+        if (canBePlayed(drawnCard)) {
+            this.currentPlayer.removeCardFromHand(drawnCard);
+            handleCard(drawnCard);
+        }
     }
 
 }

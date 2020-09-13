@@ -36,7 +36,20 @@ public class Player {
         return hand.remove(index);
     }
 
+    /**
+     * This function removes the specified card from the Player's hand
+     * @param cardToRemove Card to be removed
+     * @return True if the Card was removed, false otherwise
+     */
+    public Boolean removeCardFromHand(Card cardToRemove) {
+        return hand.remove(cardToRemove);
+    }
+
     public ArrayList<Card> getHand() {
         return hand;
+    }
+
+    public Boolean noCards() {
+        return hand.isEmpty();
     }
 }
