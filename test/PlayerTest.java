@@ -58,4 +58,10 @@ class PlayerTest {
         // Test result after adding then removing a card
         assertTrue(p.noCards());
     }
+
+    @Test
+    void nameTest() {
+        Player p = new Player("Adam");
+        assertEquals("Adam", p.getName());
+    }
 }
