@@ -65,6 +65,8 @@ public class Game {
      */
     private Boolean drawFourFlag;
 
+    private Boolean extraRules;
+
     //private int numOfPlayers;
 
     private Card.Color currentColor;
@@ -80,6 +82,7 @@ public class Game {
      */
     public Game(int numOfPlayers) {
         /* Initializing variables */
+        this.extraRules = true;
         this.inProgress = false;
         this.currentPlayer = null;
         this.currentColor = null;
@@ -169,8 +172,10 @@ public class Game {
             winner = currentPlayer;
             return;
         }
-        onlyWildRule();
-        sameCardRule();
+        if (extraRules) {
+            onlyWildRule();
+            sameCardRule();
+        }
         this.turnOrder.add(this.currentPlayer);
         this.currentPlayer = null;
     }
@@ -493,6 +498,13 @@ public class Game {
 
     public Boolean getDrawFourFlag() {
         return drawFourFlag;
+    }
+
+    /**
+     * Turns off the extra rules.
+     */
+    public void setExtraRulesFalse() {
+        extraRules = false;
     }
 
     public void clearFlags() {
