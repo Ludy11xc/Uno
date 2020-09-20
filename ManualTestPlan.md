@@ -1,18 +1,18 @@
-###### Manual Test Plan
+## Manual Test Plan
 
 
-#### Prerequisites
+### Prerequisites
 
 Needs up to date JDK and JUNIT installed.
 
 
-#### Environment Setup
+### Environment Setup
 
 Eclipse or IntelliJ is recommended for easy running of test units.
 No other environment setup required.
 
 
-#### Operations
+### Operations
 
 When running, you should see the following displays for each given scenario.
 
