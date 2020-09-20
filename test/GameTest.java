@@ -260,6 +260,7 @@ class GameTest {
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.ONE));
         playerOneHand.add(new Card(Card.Color.WILD, Card.Rank.WILD));
         g.getTurnOrder().get(0).setHand(playerOneHand);
+        g.setTopDiscard(new Card(Card.Color.RED, Card.Rank.FOUR));
         g.startGame();
         g.startTurn();
         Player first = g.getCurrentPlayer();
@@ -280,6 +281,7 @@ class GameTest {
 
         g.getTurnOrder().get(0).setHand(playerOneHand);
         g.getTurnOrder().get(1).setHand(playerTwoHand);
+        g.setTopDiscard(new Card(Card.Color.RED, Card.Rank.FOUR));
 
         g.startGame();
         g.startTurn();
