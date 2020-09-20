@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+
+/**
+ * Main class that keeps track of game state during play.
+ * Contains and handles all game logic.
+ */
 public class Game {
     /**
      * Constants declared defining the number of sets of each type of card
@@ -26,6 +31,10 @@ public class Game {
     private ArrayList<Player> turnOrder;
     /**
      * Stores the deck as an ArrayList of Cards
+     *
+     * This ArrayList is initialized as the deck, hence the name,
+     * but in actuality it acts as the draw pile, as cards are
+     * removed from it as they are dealt out.
      */
     private ArrayList<Card> deck;
     /**
@@ -56,6 +65,8 @@ public class Game {
      */
     private Boolean drawFourFlag;
 
+    private Boolean extraRules;
+
     //private int numOfPlayers;
 
     private Card.Color currentColor;
@@ -71,6 +82,7 @@ public class Game {
      */
     public Game(int numOfPlayers) {
         /* Initializing variables */
+        this.extraRules = true;
         this.inProgress = false;
         this.currentPlayer = null;
         this.currentColor = null;
@@ -160,6 +172,10 @@ public class Game {
             winner = currentPlayer;
             return;
         }
+        if (extraRules) {
+            onlyWildRule();
+            sameCardRule();
+        }
         this.turnOrder.add(this.currentPlayer);
         this.currentPlayer = null;
     }
@@ -221,7 +237,7 @@ public class Game {
      * This function randomly establishes the turn order for the game.
      */
     private void initiateTurnOrder() {
-        this.turnOrder = new ArrayList<Player>();
+        this.turnOrder = new ArrayList<>();
         this.turnOrder.addAll(Arrays.asList(players));
         Collections.shuffle(this.turnOrder);
     }
@@ -236,7 +252,7 @@ public class Game {
      * For a total of 108 cards
      */
     private void initiateStandardDeck() {
-        this.deck = new ArrayList<Card>();
+        this.deck = new ArrayList<>();
         // add all of the zero cards
         addDeckCards(ZEROS, Card.normalColors, Card.zeroRank);
         // add all of the 1-9 AND skip, reverse, and draw two cards
@@ -312,7 +328,7 @@ public class Game {
      * by removing the top card from the deck
      */
     private void initiateDiscardPile() {
-        this.discard = new ArrayList<Card>();
+        this.discard = new ArrayList<>();
         this.discard.add(this.deck.remove(this.deck.size() - 1));
         Card discardTop = topOfDiscard();
 
@@ -344,12 +360,43 @@ public class Game {
 
     /**
      * Causes the Player to draw x cards
+     * NOTE: These cards are not playable immediately.
      * @param p Player drawing the cards
      * @param x number of cards drawn
      */
     private void drawX(Player p, int x) {
         for (int i = 0; i < x; i++) {
             dealOneCard(p);
+        }
+    }
+
+    /**
+     * New Rule:
+     * If the same card (same color and rank) is played twice in a row,
+     * the turn order is reversed and the next player must draw 2 and lose a turn
+     */
+    private void sameCardRule() {
+        if (discard.size() < 3) {
+            return;
+        }
+        Card lastCard = discard.get(discard.size() - 2);
+        if (topOfDiscard().getColor() == lastCard.getColor() &&
+                topOfDiscard().getRank() == lastCard.getRank()) {
+            reverseTurnOrder();
+            drawTwoFlag = true;
+        }
+    }
+
+    /**
+     * New Rule:
+     * If a player ends his turn with only a WILD card, he must draw one card.
+     */
+    private void onlyWildRule() {
+        if (currentPlayer.getHand().size() > 1) {
+            return;
+        }
+        if (currentPlayer.getHand().get(0).getColor() == Card.Color.WILD) {
+            dealOneCard(currentPlayer);
         }
     }
 
@@ -451,6 +498,13 @@ public class Game {
 
     public Boolean getDrawFourFlag() {
         return drawFourFlag;
+    }
+
+    /**
+     * Turns off the extra rules.
+     */
+    public void setExtraRulesFalse() {
+        extraRules = false;
     }
 
     public void clearFlags() {

@@ -15,6 +15,7 @@ class GameTest {
     void gameTest() {
         // Testing the constructor as a whole
         Game g = new Game(2);
+        g.setExtraRulesFalse();
 
         // Testing deck size (- 1 comes from discard pile)
         assertEquals(TOTAL_CARDS - (NUMBER_OF_PLAYERS * STARTING_CARDS) - 1,
@@ -51,6 +52,7 @@ class GameTest {
     @Test
     void startAndEndTurnTest() {
         Game g = new Game(2);
+        g.setExtraRulesFalse();
         g.startGame();
         Player firstPlay = g.getTurnOrder().get(0);
         Player secondPlay = g.getTurnOrder().get(1);
@@ -91,7 +93,7 @@ class GameTest {
 
     @Test
     void executeTurnTest() {
-        ArrayList<Card> playerOneHand = new ArrayList<Card>();
+        ArrayList<Card> playerOneHand = new ArrayList<>();
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.FOUR));
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.SKIP));
         playerOneHand.add(new Card(Card.Color.WILD, Card.Rank.DRAWFOUR));
@@ -99,11 +101,12 @@ class GameTest {
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.REVERSE));
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.FIVE));
 
-        ArrayList<Card> playerTwoHand = new ArrayList<Card>();
+        ArrayList<Card> playerTwoHand = new ArrayList<>();
         playerTwoHand.add(new Card(Card.Color.BLUE, Card.Rank.NINE));
 
 
         Game g = new Game(2);
+        g.setExtraRulesFalse();
         g.getTurnOrder().get(0).setHand(playerOneHand);
         g.getTurnOrder().get(1).setHand(playerTwoHand);
         g.startGame();
@@ -228,7 +231,7 @@ class GameTest {
 
     @Test
     void discardToDeckTest() {
-        ArrayList<Card> newHand = new ArrayList<Card>();
+        ArrayList<Card> newHand = new ArrayList<>();
         newHand.add(new Card(Card.Color.BLUE, Card.Rank.ONE));
 
         Game g = new Game(2);
@@ -248,6 +251,48 @@ class GameTest {
 
         // Test if deck contains the right amount of cards
         assertEquals(9, g.getDeck().size());
+    }
+
+    @Test
+    void onlyWildRule() {
+        Game g = new Game(3);
+        ArrayList<Card> playerOneHand = new ArrayList<>();
+        playerOneHand.add(new Card(Card.Color.RED, Card.Rank.ONE));
+        playerOneHand.add(new Card(Card.Color.WILD, Card.Rank.WILD));
+        g.getTurnOrder().get(0).setHand(playerOneHand);
+        g.setTopDiscard(new Card(Card.Color.RED, Card.Rank.FOUR));
+        g.startGame();
+        g.startTurn();
+        Player first = g.getCurrentPlayer();
+        g.executeTurn();
+        g.endTurn();
+        assertEquals(2, first.getHand().size());
+    }
+
+    @Test
+    void sameCardRule() {
+        Game g = new Game(3);
+        ArrayList<Card> playerOneHand = new ArrayList<>();
+        ArrayList<Card> playerTwoHand = new ArrayList<>();
+        playerOneHand.add(new Card(Card.Color.RED, Card.Rank.ONE));
+        playerOneHand.add(new Card(Card.Color.BLUE, Card.Rank.TWO));
+        playerTwoHand.add(new Card(Card.Color.RED, Card.Rank.ONE));
+        playerTwoHand.add(new Card(Card.Color.BLUE, Card.Rank.TWO));
+
+        g.getTurnOrder().get(0).setHand(playerOneHand);
+        g.getTurnOrder().get(1).setHand(playerTwoHand);
+        g.setTopDiscard(new Card(Card.Color.RED, Card.Rank.FOUR));
+
+        g.startGame();
+        g.startTurn();
+        g.executeTurn();
+        g.endTurn();
+        g.startTurn();
+        g.executeTurn();
+        g.endTurn();
+
+        assertTrue(g.getDrawTwoFlag());
+
     }
 
     /* Made sense to combine this test with the start turn test.

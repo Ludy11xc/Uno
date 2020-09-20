@@ -9,12 +9,12 @@ class PlayerTest {
     @Test
     void addAndRemoveCard() { // Changed name from addCardToHand to addAndRemoveCard because it made sense to combine the tests
         // Setting up hands to be compared
-        ArrayList<Card> empty = new ArrayList<Card>();
+        ArrayList<Card> empty = new ArrayList<>();
         Card c1 = new Card(Card.Color.RED, Card.Rank.ONE);
         Card c2 = new Card(Card.Color.WILD, Card.Rank.DRAWFOUR);
-        ArrayList<Card> trialHand1 = new ArrayList<Card>();
+        ArrayList<Card> trialHand1 = new ArrayList<>();
         trialHand1.add(c1);
-        ArrayList<Card> trialHand2 = new ArrayList<Card>();
+        ArrayList<Card> trialHand2 = new ArrayList<>();
         trialHand2.add(c1);
         trialHand2.add(c2);
 
@@ -57,5 +57,11 @@ class PlayerTest {
         p.removeCardFromHand(0);
         // Test result after adding then removing a card
         assertTrue(p.noCards());
+    }
+
+    @Test
+    void nameTest() {
+        Player p = new Player("Adam");
+        assertEquals("Adam", p.getName());
     }
 }
