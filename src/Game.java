@@ -169,6 +169,8 @@ public class Game {
             winner = currentPlayer;
             return;
         }
+        onlyWildRule();
+        sameCardRule();
         this.turnOrder.add(this.currentPlayer);
         this.currentPlayer = null;
     }
@@ -353,12 +355,43 @@ public class Game {
 
     /**
      * Causes the Player to draw x cards
+     * NOTE: These cards are not playable immediately.
      * @param p Player drawing the cards
      * @param x number of cards drawn
      */
     private void drawX(Player p, int x) {
         for (int i = 0; i < x; i++) {
             dealOneCard(p);
+        }
+    }
+
+    /**
+     * New Rule:
+     * If the same card (same color and rank) is played twice in a row,
+     * the turn order is reversed and the next player must draw 2 and lose a turn
+     */
+    private void sameCardRule() {
+        if (discard.size() < 3) {
+            return;
+        }
+        Card lastCard = discard.get(discard.size() - 2);
+        if (topOfDiscard().getColor() == lastCard.getColor() &&
+                topOfDiscard().getRank() == lastCard.getRank()) {
+            reverseTurnOrder();
+            drawTwoFlag = true;
+        }
+    }
+
+    /**
+     * New Rule:
+     * If a player ends his turn with only a WILD card, he must draw one card.
+     */
+    private void onlyWildRule() {
+        if (currentPlayer.getHand().size() > 1) {
+            return;
+        }
+        if (currentPlayer.getHand().get(0).getColor() == Card.Color.WILD) {
+            dealOneCard(currentPlayer);
         }
     }
 
