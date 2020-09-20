@@ -24,6 +24,10 @@ public class GameView {
         System.out.println("Please input the number of players for this game: ");
     }
 
+    /**
+     * Displays a prompt when a WILD Card is played
+     * and a Color needs to be selected
+     */
     public static void selectColorPrompt() {
         System.out.println("Please select what color you would like to set the game to: ");
     }
