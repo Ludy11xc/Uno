@@ -279,6 +279,9 @@ class GameTest {
         playerTwoHand.add(new Card(Card.Color.RED, Card.Rank.ONE));
         playerTwoHand.add(new Card(Card.Color.BLUE, Card.Rank.TWO));
 
+        g.getTurnOrder().get(0).setHand(playerOneHand);
+        g.getTurnOrder().get(1).setHand(playerTwoHand);
+
         g.startGame();
         g.startTurn();
         g.executeTurn();
