@@ -127,6 +127,18 @@ public class Card {
         return Arrays.asList(normalColors).contains(this.color);
     }
 
+    /**
+     * Converts the Card to a string representation
+     * @return string representation of Card
+     */
+    public String toString() {
+        if (color == Color.WILD) {
+            return rank.name();
+        } else {
+            return (color.name() + " " + rank.name());
+        }
+    }
+
     public Color getColor() {
         return color;
     }
