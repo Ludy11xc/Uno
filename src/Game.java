@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+
+/**
+ * Main class that keeps track of game state during play.
+ * Contains and handles all game logic.
+ */
 public class Game {
     /**
      * Constants declared defining the number of sets of each type of card
@@ -26,6 +31,10 @@ public class Game {
     private ArrayList<Player> turnOrder;
     /**
      * Stores the deck as an ArrayList of Cards
+     *
+     * This ArrayList is initialized as the deck, hence the name,
+     * but in actuality it acts as the draw pile, as cards are
+     * removed from it as they are dealt out.
      */
     private ArrayList<Card> deck;
     /**

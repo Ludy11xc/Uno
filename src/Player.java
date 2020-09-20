@@ -6,28 +6,46 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    // private static int players = 0;  Might use in final implementation
+    /**
+     * Keeps track of number of players created.
+     */
+    private static int numberOfPlayers = 0;
 
     /**
      * hand stores the Cards currently in the Player's hand
      */
     private ArrayList<Card> hand;
 
-    /* May use for final implementation
+
     /**
-     * Unique identifier
-     *
-    private int id;
+     * Player name used when displaying turn order
      */
+    private String name;
+
+    /**
+     * Unique id, used for name if none are provided
+     */
+    private int id;
 
     /**
      * Constructor for Player;
-     * Initializes the hand ArrayList for the Player
+     * Initializes the hand ArrayList for the Player,
+     * and sets the name since none were provided.
      */
     public Player() {
-        //players++;
+        numberOfPlayers++;
+        id = numberOfPlayers;
         hand = new ArrayList<Card>();
-        // id = players;
+        name = "Player " + Integer.toString(id);
+    }
+
+    /**
+     * Alternate constructor used when a name is provided
+     * @param name Player name
+     */
+    public Player(String name) {
+        hand = new ArrayList<Card>();
+        this.name = name;
     }
 
     /**
@@ -57,9 +75,11 @@ public class Player {
         return hand.remove(cardToRemove);
     }
 
+
     public ArrayList<Card> getHand() {
         return hand;
     }
+
 
     /**
      * Sets hand to object passed in.  Used only for easier testing.
@@ -69,12 +89,23 @@ public class Player {
         hand = newHand;
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+
     /* May use for final implementation
     public int getId() {
         return id;
     }
     */
 
+
+    /**
+     * Checks if player hand is empty
+     * @return True if player has no cards, false otherwise
+     */
     public Boolean noCards() {
         return hand.isEmpty();
     }
