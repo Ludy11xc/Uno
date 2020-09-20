@@ -18,6 +18,17 @@ public class GameView {
     }
 
     /**
+     * Displays a prompt asking for the number of players.
+     */
+    public static void numberOfPlayersPrompt() {
+        System.out.println("Please input the number of players for this game: ");
+    }
+
+    public static void selectColorPrompt() {
+        System.out.println("Please select what color you would like to set the game to: ");
+    }
+
+    /**
      * Displays the current state of the game, including:
      * Current Player,
      * Turn order following current Player,
@@ -36,8 +47,8 @@ public class GameView {
         int deckCards = game.getDeck().size();
         int discardCards = game.getDiscard().size();
 
-        System.out.println(deckCards + " Cards in Deck");
-        System.out.println(discardCards + " Cards in Discard Pile");
+        System.out.println(deckCards + " Card(s) in Deck");
+        System.out.println(discardCards + " Card(s) in Discard Pile");
 
         Card current = game.getDiscard().get(game.getDiscard().size() - 1);
         System.out.println("Current Card: " + current.toString());
@@ -67,6 +78,7 @@ public class GameView {
             System.out.print(card.toString());
             System.out.print(" | ");
         }
+        System.out.println();
     }
 
     /**
@@ -75,6 +87,7 @@ public class GameView {
     public void displayWinner() {
         System.out.println(game.getWinner() + " won!  Congrats!");
     }
+
 
     /**
      * Used to clear the console so that the current player
