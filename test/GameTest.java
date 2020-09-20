@@ -93,7 +93,7 @@ class GameTest {
 
     @Test
     void executeTurnTest() {
-        ArrayList<Card> playerOneHand = new ArrayList<Card>();
+        ArrayList<Card> playerOneHand = new ArrayList<>();
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.FOUR));
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.SKIP));
         playerOneHand.add(new Card(Card.Color.WILD, Card.Rank.DRAWFOUR));
@@ -101,7 +101,7 @@ class GameTest {
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.REVERSE));
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.FIVE));
 
-        ArrayList<Card> playerTwoHand = new ArrayList<Card>();
+        ArrayList<Card> playerTwoHand = new ArrayList<>();
         playerTwoHand.add(new Card(Card.Color.BLUE, Card.Rank.NINE));
 
 
@@ -231,7 +231,7 @@ class GameTest {
 
     @Test
     void discardToDeckTest() {
-        ArrayList<Card> newHand = new ArrayList<Card>();
+        ArrayList<Card> newHand = new ArrayList<>();
         newHand.add(new Card(Card.Color.BLUE, Card.Rank.ONE));
 
         Game g = new Game(2);
@@ -256,8 +256,7 @@ class GameTest {
     @Test
     void onlyWildRule() {
         Game g = new Game(3);
-        ArrayList<Card> playerOneHand = new ArrayList<Card>();
-        ArrayList<Card> playerTwoHand = new ArrayList<Card>();
+        ArrayList<Card> playerOneHand = new ArrayList<>();
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.ONE));
         playerOneHand.add(new Card(Card.Color.WILD, Card.Rank.WILD));
         g.getTurnOrder().get(0).setHand(playerOneHand);
@@ -272,8 +271,8 @@ class GameTest {
     @Test
     void sameCardRule() {
         Game g = new Game(3);
-        ArrayList<Card> playerOneHand = new ArrayList<Card>();
-        ArrayList<Card> playerTwoHand = new ArrayList<Card>();
+        ArrayList<Card> playerOneHand = new ArrayList<>();
+        ArrayList<Card> playerTwoHand = new ArrayList<>();
         playerOneHand.add(new Card(Card.Color.RED, Card.Rank.ONE));
         playerOneHand.add(new Card(Card.Color.BLUE, Card.Rank.TWO));
         playerTwoHand.add(new Card(Card.Color.RED, Card.Rank.ONE));

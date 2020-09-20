@@ -7,7 +7,7 @@ public class GameView {
     /**
      * Game which the view displays information for
      */
-    private Game game;
+    private final Game game;
 
     /**
      * Constructor for GameView object
@@ -36,8 +36,8 @@ public class GameView {
         int deckCards = game.getDeck().size();
         int discardCards = game.getDiscard().size();
 
-        System.out.println(Integer.toString(deckCards) + " Cards in Deck");
-        System.out.println(Integer.toString(discardCards) + " Cards in Discard Pile");
+        System.out.println(deckCards + " Cards in Deck");
+        System.out.println(discardCards + " Cards in Discard Pile");
 
         Card current = game.getDiscard().get(game.getDiscard().size() - 1);
         System.out.println("Current Card: " + current.toString());
@@ -51,7 +51,6 @@ public class GameView {
      */
     private void displayTurnOrder() {
         System.out.print("Current turn order:");
-        int playerCounter = 0;
         for (Player p : game.getTurnOrder()) {
             System.out.print(" -> " + p.getName());
         }
@@ -73,7 +72,7 @@ public class GameView {
     /**
      * Displays the winner of the game.
      */
-    private void displayWinner() {
+    public void displayWinner() {
         System.out.println(game.getWinner() + " won!  Congrats!");
     }
 

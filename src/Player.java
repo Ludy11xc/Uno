@@ -20,12 +20,7 @@ public class Player {
     /**
      * Player name used when displaying turn order
      */
-    private String name;
-
-    /**
-     * Unique id, used for name if none are provided
-     */
-    private int id;
+    private final String name;
 
     /**
      * Constructor for Player;
@@ -34,9 +29,9 @@ public class Player {
      */
     public Player() {
         numberOfPlayers++;
-        id = numberOfPlayers;
-        hand = new ArrayList<Card>();
-        name = "Player " + Integer.toString(id);
+        int id = numberOfPlayers;
+        hand = new ArrayList<>();
+        name = "Player " + id;
     }
 
     /**
@@ -44,7 +39,7 @@ public class Player {
      * @param name Player name
      */
     public Player(String name) {
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         this.name = name;
     }
 

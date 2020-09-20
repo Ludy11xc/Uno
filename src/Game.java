@@ -237,7 +237,7 @@ public class Game {
      * This function randomly establishes the turn order for the game.
      */
     private void initiateTurnOrder() {
-        this.turnOrder = new ArrayList<Player>();
+        this.turnOrder = new ArrayList<>();
         this.turnOrder.addAll(Arrays.asList(players));
         Collections.shuffle(this.turnOrder);
     }
@@ -252,7 +252,7 @@ public class Game {
      * For a total of 108 cards
      */
     private void initiateStandardDeck() {
-        this.deck = new ArrayList<Card>();
+        this.deck = new ArrayList<>();
         // add all of the zero cards
         addDeckCards(ZEROS, Card.normalColors, Card.zeroRank);
         // add all of the 1-9 AND skip, reverse, and draw two cards
@@ -328,7 +328,7 @@ public class Game {
      * by removing the top card from the deck
      */
     private void initiateDiscardPile() {
-        this.discard = new ArrayList<Card>();
+        this.discard = new ArrayList<>();
         this.discard.add(this.deck.remove(this.deck.size() - 1));
         Card discardTop = topOfDiscard();
 
