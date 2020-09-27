@@ -112,7 +112,7 @@ class GameTest {
         g.startGame();
         g.startTurn();
         g.setTopDiscard(new Card(Card.Color.RED, Card.Rank.ONE));
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
 
         // Test that the card was played
         assertEquals(5, g.getCurrentPlayer().getHand().size());
@@ -125,7 +125,7 @@ class GameTest {
         g.startTurn();
         //g.getCurrentPlayer().setHand(playerTwoHand);
         int cardsInDeck = g.getDeck().size();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
 
         // Test that the player had to draw a card
         assertEquals(cardsInDeck - 1, g.getDeck().size());
@@ -140,7 +140,7 @@ class GameTest {
         g.clearFlags();
 
         g.startTurn();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
 
         // Test that the card is in the discard pile
         assertEquals(Card.Rank.SKIP,
@@ -152,7 +152,7 @@ class GameTest {
 
         g.startTurn();
         int numCardsInHand = g.getCurrentPlayer().getHand().size();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
 
         // Test that the turn was skipped
         assertEquals(numCardsInHand, g.getCurrentPlayer().getHand().size());
@@ -164,7 +164,7 @@ class GameTest {
 
         g.startTurn();
 
-        g.executeTurn(); // Wild Draw four card should be played here
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer())); // Wild Draw four card should be played here
 
         // Test that wild draw four card was played
         assertEquals(g.getDiscard().get(g.getDiscard().size() - 1).getRank(),
@@ -177,7 +177,7 @@ class GameTest {
 
         g.startTurn();
         numCardsInHand = g.getCurrentPlayer().getHand().size();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
 
         // Test that the player drew 4 cards and skipped their turn
         assertEquals(numCardsInHand + 4,
@@ -188,24 +188,24 @@ class GameTest {
         g.endTurn();
 
         g.startTurn();
-        g.executeTurn(); // Player 1 plays draw 2 card
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer())); // Player 1 plays draw 2 card
         g.endTurn();
 
         // Test drawTwoFlag
         assertTrue(g.getDrawTwoFlag());
 
         g.startTurn();
-        g.executeTurn(); // Player 2 draws 2
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer())); // Player 2 draws 2
         g.endTurn();
 
         g.startTurn();
-        g.executeTurn(); // Player 1 plays reverse card
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer())); // Player 1 plays reverse card
         g.endTurn();
 
 
 
         g.startTurn();
-        g.executeTurn(); // Player 2 may play or draw
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer())); // Player 2 may play or draw
         g.endTurn();
 
         // For deterministic testing
@@ -220,7 +220,7 @@ class GameTest {
         assertEquals(Card.Rank.REVERSE,
                 g.getDiscard().get(g.getDiscard().size() - 1).getRank());
 
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
         g.endTurn();
 
         // Test that the player has an empty hand
@@ -246,7 +246,7 @@ class GameTest {
         // Make sure the player will have to draw
         g.getCurrentPlayer().setHand(newHand);
 
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
         g.endTurn();
 
         // Test if deck contains the right amount of cards
@@ -264,7 +264,7 @@ class GameTest {
         g.startGame();
         g.startTurn();
         Player first = g.getCurrentPlayer();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
         g.endTurn();
         assertEquals(2, first.getHand().size());
     }
@@ -285,10 +285,10 @@ class GameTest {
 
         g.startGame();
         g.startTurn();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
         g.endTurn();
         g.startTurn();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
         g.endTurn();
 
         assertTrue(g.getDrawTwoFlag());
