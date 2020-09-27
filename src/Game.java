@@ -125,8 +125,9 @@ public class Game {
     /**
      * Main logic of basic gameplay.
      * Executes a turn for the current player.
+     * @param cardIndex index of card to be played
      */
-    public void executeTurn() {
+    public void executeTurn(int cardIndex) {
         if (this.skipFlag) {
             this.skipFlag = false;
             return;
@@ -147,7 +148,7 @@ public class Game {
         }
 
         /* BELOW THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
-        int cardIndex = getFirstPlayableCardIndex(currentPlayer);
+        //int cardIndex = getFirstPlayableCardIndex(currentPlayer);
         /* ABOVE THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
 
         /*
@@ -192,9 +193,9 @@ public class Game {
             if (playedCard.getRank() == Card.Rank.DRAWFOUR) {
                 this.drawFourFlag = true;
             }
-            /* BELOW THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
-            Card.Color newColor = Card.Color.RED;
-            /* ABOVE THIS WILL BE REPLACED WITH AN I/O FUNCTION TO GET USER INPUT */
+
+            Card.Color newColor = GameController.scanColorChoice();// Card.Color.RED;
+
             chooseColor(newColor);
         } else {
             if (playedCard.getRank() == Card.Rank.SKIP) {
@@ -406,7 +407,7 @@ public class Game {
      * @param p Player who's hand the function is checking
      * @return true if Player p has a playable card, false otherwise.
      */
-    private Boolean isAbleToPlay(Player p) {
+    public Boolean isAbleToPlay(Player p) {
         ArrayList<Card> hand = p.getHand();
         for (Card card : hand) {
             if (canBePlayed(card)) {
@@ -423,7 +424,7 @@ public class Game {
      * @param c card being checked for validity
      * @return true or false
      */
-    private Boolean canBePlayed(Card c) {
+    public Boolean canBePlayed(Card c) {
         return (c.isValidCard(topOfDiscard()) || (c.getColor() == this.currentColor));
     }
 
@@ -432,7 +433,7 @@ public class Game {
      * @param p Player to check
      * @return index of first playable card
      */
-    private int getFirstPlayableCardIndex(Player p) {
+    public int getFirstPlayableCardIndex(Player p) {
         ArrayList<Card> playerHand = p.getHand();
         for (int i = 0; i < playerHand.size(); i++) {
             if (canBePlayed(playerHand.get(i))) {

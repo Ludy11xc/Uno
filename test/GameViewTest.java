@@ -12,7 +12,7 @@ class GameViewTest {
         g.startGame();
         g.startTurn();
         view.displayGameState();
-        g.executeTurn();
+        g.executeTurn(g.getFirstPlayableCardIndex(g.getCurrentPlayer()));
         GameView.selectColorPrompt();
         g.endTurn();
         g.endGame();

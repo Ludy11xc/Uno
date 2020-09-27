@@ -21,7 +21,7 @@ public class GameView {
      * Displays a prompt asking for the number of players.
      */
     public static void numberOfPlayersPrompt() {
-        System.out.println("Please input the number of players for this game: ");
+        System.out.println("Please input the number of players for this game (2-10): ");
     }
 
     /**
@@ -29,7 +29,19 @@ public class GameView {
      * and a Color needs to be selected
      */
     public static void selectColorPrompt() {
-        System.out.println("Please select what color you would like to set the game to: ");
+        System.out.println("Please enter the number of the color you would like to set the game to: \n1: RED \n2: YELLOW \n3: GREEN \n4: BLUE ");
+    }
+
+    /**
+     * Displays a prompt asking the user for the index of the card to be played
+     */
+    public static void playCardPrompt() {
+        System.out.println("Please enter the number of the card you wish to play (-1 to draw): ");
+    }
+
+
+    public static void notPlayableCardPrompt() {
+        System.out.println("The card selected is not able to be played.");
     }
 
     /**
@@ -78,9 +90,12 @@ public class GameView {
      */
     private void displayPlayerHand(Player player) {
         System.out.println(player.getName() + "'s hand: ");
+        int index = 0;
         for (Card card : player.getHand()) {
+            System.out.print(index + ": ");
             System.out.print(card.toString());
             System.out.print(" | ");
+            index++;
         }
         System.out.println();
     }
